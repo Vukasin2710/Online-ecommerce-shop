@@ -1,5 +1,5 @@
 
-function App() {
+function AppLayout() {
 
 
   return (
@@ -9,4 +9,4 @@ function App() {
   )
 }
 
-export default App
+export default AppLayout
