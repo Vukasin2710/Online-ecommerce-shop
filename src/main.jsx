@@ -5,13 +5,14 @@ import "./index.css";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store/store.js";
-
 // Router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Pages
 import HomePage from "./pages/HomePage.jsx";
+import SingleProductPage from "./pages/SingleProductPage.jsx";
 // Clerk
 import { ClerkProvider } from "@clerk/clerk-react";
+
 
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
+      {
+        path: "/singleProduct/:id",
+        element: <SingleProductPage />,
+      }
     ],
   },
 ]);

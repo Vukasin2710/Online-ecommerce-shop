@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 // images/logo
 import logo from "../assets/logo.png";
 // clerk
@@ -10,7 +11,9 @@ function NavBarComponent() {
   return (
     <div className="bg-main-blue h-full lg:h-[100px] flex items-center py-[10px]">
       <div className="container mx-auto flex justify-between items-center flex flex-col lg:flex-row gap-[10px]">
-        <img src={logo} alt="logo" />
+        <Link to={"/"}>
+          <img src={logo} alt="logo" />
+        </Link>
 
         <div className="bg-text-White rounded-[20px]">
           <input type="text" placeholder="Search any things" className="bg-transparent outline-none px-[20px] py-[10px] rounded-[20px] placeholder:text-gray-500 text-text-Dark cursor-pointer" />
