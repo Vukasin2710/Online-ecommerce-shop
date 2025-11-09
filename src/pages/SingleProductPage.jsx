@@ -1,13 +1,16 @@
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductService from "../services/ProductServices";
 import { Rating } from "@mui/material";
+import { useDispatch } from "react-redux";
 
 // icons
 import { FaCheck } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { FaShippingFast } from "react-icons/fa";
+import { saveInCartAction } from "../store/cartSlice";
 
 
 function SingleProductPage() {
@@ -15,6 +18,9 @@ function SingleProductPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [countProduct, setCountProduct] = useState(1);
+
+  // dispatch for redux
+  const dispatch = useDispatch();
 
   let { id } = useParams();
 
@@ -29,6 +35,10 @@ function SingleProductPage() {
 
   function handleImage(index) {
     setCurrentImage(index);
+  }
+
+  function handleProductCart() {
+    dispatch(saveInCartAction(singleProduct))
   }
 
   return (
@@ -110,7 +120,7 @@ function SingleProductPage() {
             </div>
 
             <div className="flex items-center mt-[30px] gap-[20px]">
-              <button className="bg-main-Yellow text-text-White px-[26px] py-[13px] rounded-lg">Add To Cart</button>
+              <Link to={'/cart'} className="bg-main-Yellow text-text-White px-[26px] py-[13px] rounded-lg" onClick={handleProductCart}>Add To Cart</Link>
               <div className="bg-[#EEEEEE] p-[10px] rounded-full">
                 <IoIosHeartEmpty size={30} />
               </div>
