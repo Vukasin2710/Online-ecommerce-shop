@@ -18,11 +18,9 @@ function NavBarComponent() {
    const {totalProduct} = useSelector((state) => state.cartStore);
 
    useEffect(() => {
-    let lsTotal = JSON.parse(localStorage.getItem('cart_total'));
-    if(lsTotal){
-    setTotalProductLS(lsTotal);
-    }
-   }, [totalProduct]);
+  setTotalProductLS(totalProduct || 0);
+}, [totalProduct]);
+
 
   return (
     <div className="bg-main-blue h-full lg:h-[100px] flex items-center py-[10px]">

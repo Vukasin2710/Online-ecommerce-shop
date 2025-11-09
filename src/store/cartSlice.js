@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: {
-    cart: JSON.parse(localStorage.getItem('cart_item')) || [],
-    totalProduct: JSON.parse(localStorage.getItem('cart_total')) || 0,
+    cart: JSON.parse(localStorage.getItem("cart_item")) || [],
+    totalProduct: JSON.parse(localStorage.getItem("cart_total")) || 0,
+    totalPrice: 0,
   },
   reducers: {
     saveInCartAction: (state, action) => {
@@ -25,23 +26,36 @@ const cartSlice = createSlice({
           cartTotal: action.payload.price,
         });
         state.totalProduct++;
+        state.totalPrice += action.payload.price;
       } else {
         copyCart[findIndex].count++;
         copyCart[findIndex].cartTotal =
           copyCart[findIndex].count * copyCart[findIndex].price;
       }
       state.cart = copyCart;
-      localStorage.setItem('cart_item', JSON.stringify(copyCart));
-      localStorage.setItem('cart_total', JSON.stringify(state.totalProduct));
+      localStorage.setItem("cart_item", JSON.stringify(copyCart));
+      localStorage.setItem("cart_total", JSON.stringify(state.totalProduct));
     },
-
     deleteFromCartAction: (state, action) => {
-      const updatedCart = state.cart.filter(item => item.id !== action.payload);
-      state.cart = updatedCart;
-      state.totalProduct = updatedCart.length;
+      const productId = action.payload;
 
-      localStorage.setItem('cart_item', JSON.stringify(updatedCart));
-      localStorage.setItem('cart_total', JSON.stringify(state.totalProduct));
+      const deletedItem = state.cart.find((item) => item.id === productId);
+      if (!deletedItem) return;
+
+      const updatedCart = state.cart.filter((item) => item.id !== productId);
+
+      state.cart = updatedCart;
+      state.totalProduct = updatedCart.reduce(
+        (acc, item) => acc + item.count,
+        0
+      );
+      state.totalPrice = updatedCart.reduce(
+        (acc, item) => acc + item.cartTotal,
+        0
+      );
+
+      localStorage.setItem("cart_item", JSON.stringify(updatedCart));
+      localStorage.setItem("cart_total", JSON.stringify(state.totalProduct));
     },
   },
 });

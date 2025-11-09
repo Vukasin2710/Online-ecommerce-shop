@@ -6,11 +6,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { deleteFromCartAction } from '../store/cartSlice';
+
 
 function CartPage() {
-
   const {cart} = useSelector((state) => state.cartStore);
+  const dispatch = useDispatch();
+
+  function handleRemoveProduct(product) {
+    dispatch(deleteFromCartAction(product));
+  }
 
   return (
     <div className='mt-50px'>
@@ -45,7 +51,7 @@ function CartPage() {
               </TableCell>
               <TableCell align="right">${product.cartTotal}</TableCell>
               <TableCell align="right">
-                <button className='text-red-500'>Remove</button>
+                <button className='text-red-500 cursor-pointer' onClick={() => handleRemoveProduct(product.id)}>Remove</button>
               </TableCell>
             </TableRow>
           ))}
