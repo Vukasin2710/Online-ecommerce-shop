@@ -26,12 +26,15 @@ const cartSlice = createSlice({
           cartTotal: action.payload.price,
         });
         state.totalProduct++;
-        state.totalPrice += action.payload.price;
       } else {
         copyCart[findIndex].count++;
         copyCart[findIndex].cartTotal =
           copyCart[findIndex].count * copyCart[findIndex].price;
       }
+
+      // ispravno računanje totalPrice
+      state.totalPrice = subTotal(copyCart);
+
       state.cart = copyCart;
       localStorage.setItem("cart_item", JSON.stringify(copyCart));
       localStorage.setItem("cart_total", JSON.stringify(state.totalProduct));
@@ -57,8 +60,35 @@ const cartSlice = createSlice({
       localStorage.setItem("cart_item", JSON.stringify(updatedCart));
       localStorage.setItem("cart_total", JSON.stringify(state.totalProduct));
     },
-  },
-});
+    setPriceHandlerAction: (state, action) => {
+      const { increment, index,} = action.payload;
+      let copyCart = [...state.cart];
 
-export const { saveInCartAction, deleteFromCartAction } = cartSlice.actions;
+      
+      copyCart[index].cartTotal += copyCart[index].price * increment;
+      state.totalPrice = subTotal(copyCart);
+
+      if(copyCart[index].count === 1 && increment === -1){
+        copyCart.splice(index, 1);
+        state.totalProduct--;
+      }else{
+        copyCart[index].count += increment;
+      }
+      
+      state.cart = copyCart;
+       localStorage.setItem("cart_item", JSON.stringify(copyCart));
+      localStorage.setItem("cart_total", JSON.stringify(state.totalProduct));
+    }
+    },
+  },
+
+);
+
+function subTotal(arrayCart) {
+  return arrayCart.reduce((acc, current) => {
+    return acc + current.cartTotal;
+  }, 0);
+}
+
+export const { saveInCartAction, deleteFromCartAction, setPriceHandlerAction } = cartSlice.actions;
 export default cartSlice.reducer;
