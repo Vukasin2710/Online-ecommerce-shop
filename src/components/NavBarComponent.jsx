@@ -7,13 +7,17 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/clerk-reac
 
 // icons
 import { CiUser, CiHeart, CiShoppingCart } from "react-icons/ci";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // react
 import { useEffect, useState } from "react";
+import { saveSearchProductAction } from "../store/productSlice";
 
 function NavBarComponent() {
   const [totalProductLS, setTotalProductLS] = useState(0);
+  const [searchProducts, setSearchProducts] = useState('');
   
+  const dispatch = useDispatch();
+
   //let totalProduct = localStorage.getItem('cart_total');
    const {totalProduct} = useSelector((state) => state.cartStore);
    const {favoriteTotal} = useSelector((state) => state.favoriteStore);
@@ -21,6 +25,13 @@ function NavBarComponent() {
    useEffect(() => {
   setTotalProductLS(totalProduct || 0);
 }, [totalProduct]);
+
+  function handleSearchProducts() {
+    //console.log(searchProducts);
+    dispatch(saveSearchProductAction(searchProducts))
+    setSearchProducts('');
+    
+  }
 
 
   return (
@@ -31,8 +42,8 @@ function NavBarComponent() {
         </Link>
 
         <div className="bg-text-White rounded-[20px]">
-          <input type="text" placeholder="Search any things" className="bg-transparent outline-none px-[20px] py-[10px] rounded-[20px] placeholder:text-gray-500 text-text-Dark cursor-pointer" />
-          <button className="bg-main-Yellow text-text-White px-[30px] py-[13px] rounded-[20px] cursor-pointer">Search</button>
+          <input type="text" placeholder="Search any things" className="bg-transparent outline-none px-[20px] py-[10px] rounded-[20px] placeholder:text-gray-500 text-text-Dark cursor-pointer" value={searchProducts} onChange={(e) => setSearchProducts(e.target.value)}/>
+          <button className="bg-main-Yellow text-text-White px-[30px] py-[13px] rounded-[20px] cursor-pointer" onClick={handleSearchProducts}>Search</button>
         </div>
 
         <div className="flex items-center gap-[10px]">

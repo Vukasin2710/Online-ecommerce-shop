@@ -9,7 +9,7 @@ const categorySlice = createSlice ({
   reducers: {
     saveAllCategoryAction : (state, action) => {
       state.allCategory = action.payload;
-      state.isLoading = true;
+      state.isLoading = true
     }
   }
 })

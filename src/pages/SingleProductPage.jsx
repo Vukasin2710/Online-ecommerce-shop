@@ -63,7 +63,7 @@ function SingleProductPage() {
           {/* Images */}
           <div className="w-[50%]">
             <img src={singleProduct.images[currentImage]} alt="" />
-            <div className="flex items-center justify-between gap-[20px]">
+            <div className="flex items-center justify-between gap-[20px] flex-wrap">
               {singleProduct.images.map((el, index) => (
                 <img
                   src={el}
